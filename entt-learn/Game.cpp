@@ -11,7 +11,7 @@ Game::Game(unsigned int width, unsigned int height)
 	,	mScene{mEntityRegistry}
 {
 	mSystemsManager["RenderSystem"] = std::make_unique<RenderSystem>(mEntityRegistry, mScene);
-	
+	mSystemsManager["MotionSystem"] = std::make_unique<MotionSystem>(mEntityRegistry, mScene);
 
 }
 
@@ -58,7 +58,8 @@ void Game::handleRealTimeInput()
 
 void Game::update(sf::Time elapsedTime)
 {
-	//game_object.Update(elapsedTime);
+	for (auto& pair : mSystemsManager)
+		pair.second->update(elapsedTime);
 }
 
 void Game::render()
@@ -69,7 +70,7 @@ void Game::render()
 	//mScene.render_sprites(mWindow);
 
 	// new rendering call based on RenderSystem
-	static_cast<RenderSystem*>(mSystemsManager["RenderSystem"].get())->render_sprites(mWindow);
+	dynamic_cast<RenderSystem*>(mSystemsManager["RenderSystem"].get())->render_sprites(mWindow);
 
 	mWindow.display();
 }

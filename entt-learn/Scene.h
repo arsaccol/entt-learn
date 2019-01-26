@@ -85,16 +85,23 @@ public:
 		//registry.assign<PlayerTag, sf::Sprite>(player, )
 		registry.assign<PlayerTag>(player);
 		registry.assign<sf::Sprite>(player, player_texture);
+
+		create_particles(100);
 		// end "Actual" game entity creation
 
-		// create some "particles"
+	}
+
+private:
+	void create_particles(int how_many)
+	{
 		srand(time(nullptr));
-		for(int i = 0; i < 100; ++i)
+		for(int i = 0; i < how_many; ++i)
 		{
 			auto particle = registry.create();
+
+			// Create this particle's sprite
 			registry.assign<sf::Sprite>(particle, player_texture);
 			auto view = registry.view<sf::Sprite>();
-			
 			for (auto entity : view)
 			{
 				auto& sprite = view.get(entity);
@@ -104,27 +111,12 @@ public:
 											static_cast<sf::Uint8>(rand() % 255),
 											static_cast<sf::Uint8>(rand() % 255) });
 			}
+
+			// Create this particle's velocity
+			registry.assign<Components::Velocity>(particle, 50.f, 50.f);
 		}
 
 	}
-
-	void render_sprites(sf::RenderWindow& render_window)
-	{
-		auto view = registry.view<sf::Sprite>();
-
-		view.each([&](const auto, sf::Sprite& sprite) {
-			render_window.draw(sprite);
-		});
-
-		/*
-		for (auto sprite_entity : view)
-		{
-			auto& sprite = view.get(sprite_entity);
-			render_window.draw(sprite);
-		}
-		*/
-	}
-
 private:
 	SceneNode root_node;
 	std::vector<uint32_t> entities;
