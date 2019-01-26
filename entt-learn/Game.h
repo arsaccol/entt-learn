@@ -1,6 +1,8 @@
 #pragma once
 #include <unordered_map>
 #include <string>
+#include <unordered_map>
+#include <memory>
 
 #include <SFML/Graphics.hpp>
 #include <entt/entt.hpp>
@@ -28,7 +30,7 @@ private:
 	entt::DefaultRegistry mEntityRegistry;
 
 
-	std::unordered_map < std::string, std::unique_ptr<GameSystem> > mSystemMap;
+	std::unordered_map<std::string, std::unique_ptr<GameSystem>> mSystemsManager;
 	Scene mScene;
 	// /Experimental
 

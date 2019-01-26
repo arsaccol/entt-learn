@@ -12,19 +12,30 @@
 
 class RenderSystem : public GameSystem
 {
+public:
 	RenderSystem(entt::DefaultRegistry& registry, Scene& scene)
 		:	registry{ registry }
 		,	scene{ scene }
 	{
 	}
 
-	void render_single_node(sf::RenderTarget& render_target, sf::RenderStates render_states)
+	void render_sprites(sf::RenderWindow& render_window)
 	{
-		registry.view<sf::Drawable, sf::Transformable>();
+		auto view = registry.view<sf::Sprite>();
 		//render_target.draw(view);
+		view.each(
+			[&](const auto, sf::Sprite& sprite) {
+			render_window.draw(sprite);
+		});
 
 	}
 
+	void update(sf::Time delta_time) override
+	{
+
+	}
+
+private:
 	entt::DefaultRegistry& registry;
 	Scene& scene;
 };

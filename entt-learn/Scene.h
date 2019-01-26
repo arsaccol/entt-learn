@@ -12,6 +12,9 @@
 #include <memory>
 #include <variant>
 
+#include <cstdlib> // for rand()
+#include <ctime>
+
 #include <entt/entt.hpp>
 #include <SFML/Graphics.hpp>
 
@@ -83,6 +86,25 @@ public:
 		registry.assign<PlayerTag>(player);
 		registry.assign<sf::Sprite>(player, player_texture);
 		// end "Actual" game entity creation
+
+		// create some "particles"
+		srand(time(nullptr));
+		for(int i = 0; i < 100; ++i)
+		{
+			auto particle = registry.create();
+			registry.assign<sf::Sprite>(particle, player_texture);
+			auto view = registry.view<sf::Sprite>();
+			
+			for (auto entity : view)
+			{
+				auto& sprite = view.get(entity);
+				//sprite.setPosition(sf::Vector2f{ rand() % 640, rand() % 480 });
+				sprite.setPosition(static_cast<float>(rand() % 640), static_cast<float>(rand() % 480));
+				sprite.setColor(sf::Color{	static_cast<sf::Uint8>(rand() % 255), 
+											static_cast<sf::Uint8>(rand() % 255),
+											static_cast<sf::Uint8>(rand() % 255) });
+			}
+		}
 
 	}
 
