@@ -94,7 +94,7 @@ public:
 private:
 	void create_particles(int how_many)
 	{
-		srand(time(nullptr));
+		srand(static_cast<unsigned int>(time(nullptr)));
 		for(int i = 0; i < how_many; ++i)
 		{
 			auto particle = registry.create();
