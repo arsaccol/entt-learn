@@ -86,7 +86,7 @@ public:
 		registry.assign<PlayerTag>(player);
 		registry.assign<sf::Sprite>(player, player_texture);
 
-		create_particles(100);
+		create_particles(500);
 		// end "Actual" game entity creation
 
 	}
@@ -101,11 +101,10 @@ private:
 
 			// Create this particle's sprite
 			registry.assign<sf::Sprite>(particle, player_texture);
-			auto view = registry.view<sf::Sprite>();
-			for (auto entity : view)
+			auto sprites_view = registry.view<sf::Sprite>();
+			for (auto entity : sprites_view)
 			{
-				auto& sprite = view.get(entity);
-				//sprite.setPosition(sf::Vector2f{ rand() % 640, rand() % 480 });
+				auto& sprite = sprites_view.get(entity);
 				sprite.setPosition(static_cast<float>(rand() % 640), static_cast<float>(rand() % 480));
 				sprite.setColor(sf::Color{	static_cast<sf::Uint8>(rand() % 255), 
 											static_cast<sf::Uint8>(rand() % 255),
@@ -114,6 +113,22 @@ private:
 
 			// Create this particle's velocity
 			registry.assign<Components::Velocity>(particle, 50.f, 50.f);
+			auto velocities_view = registry.view<Components::Velocity>();
+
+			for (auto entity : velocities_view)
+			{
+				auto& velocity = velocities_view.get(entity);
+				velocity.x = static_cast<float>(rand() % 100);
+				velocity.y = static_cast<float>(rand() % 100);
+
+				int flip = rand() % 2; // either 1 or 0
+				if (flip) 
+				{
+					velocity.x *= -1;
+					velocity.y *= -1;
+				}
+
+			}
 		}
 
 	}
