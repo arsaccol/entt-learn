@@ -109,6 +109,7 @@ private:
 				sprite.setColor(sf::Color{	static_cast<sf::Uint8>(rand() % 255), 
 											static_cast<sf::Uint8>(rand() % 255),
 											static_cast<sf::Uint8>(rand() % 255) });
+				sprite.setScale(0.3f, 0.3f);
 			}
 
 			// Create this particle's velocity

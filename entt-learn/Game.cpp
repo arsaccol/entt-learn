@@ -12,6 +12,7 @@ Game::Game(unsigned int width, unsigned int height)
 {
 	mSystemsManager["RenderSystem"] = std::make_unique<RenderSystem>(mEntityRegistry, mScene);
 	mSystemsManager["MotionSystem"] = std::make_unique<MotionSystem>(mEntityRegistry, mScene);
+	mSystemsManager["CollisionSystem"] = std::make_unique<CollisionSystem>(mEntityRegistry, mScene);
 
 }
 

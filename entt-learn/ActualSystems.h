@@ -71,4 +71,40 @@ private:
 
 };
 
+class CollisionSystem : public GameSystem
+{
+public:
+	CollisionSystem(entt::DefaultRegistry& registry, Scene& scene)
+	:	registry{ registry }
+		, scene{ scene }
+	{}
+
+	virtual void update(sf::Time delta_time)
+	{
+		auto view = registry.view<sf::Sprite, Components::Velocity>();
+		// Let's do it simple for now and just keep those stars within the screen
+		for(auto entity : view)
+		{
+			auto& sprite = view.get<sf::Sprite>(entity);
+			auto& vel = view.get<Components::Velocity>(entity);
+
+			sf::Vector2f pos = sprite.getPosition();
+
+			if ((pos.x < 0 || pos.x > 640) ||
+				(pos.y < 0 || pos.y > 480))
+			{
+				vel.x *= -1;
+				vel.y *= -1;
+			}
+			
+		}
+
+
+
+	}
+
+private:
+	entt::DefaultRegistry& registry;
+	Scene& scene;
+};
 
